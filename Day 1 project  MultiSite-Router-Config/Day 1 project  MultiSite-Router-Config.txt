@@ -1,0 +1,95 @@
+Basic management setup configures only enough connectivity
+for management of the system, extended setup will ask you
+to configure each interface on the system
+
+Would you like to enter basic management setup? [yes/no]: yes
+Configuring global parameters:
+
+  Enter host name [Router]: IhsanRouter
+
+  The enable secret is a password used to protect access to
+  privileged EXEC and configuration modes. This password, after
+  entered, becomes encrypted in the configuration.
+  Enter enable secret: ***
+
+  The enable password is used when you do not specify an
+  enable secret password, with some older software versions, and
+  some boot images.
+  Enter enable password: ***
+
+  The virtual terminal password is used to protect
+  access to the router over a network interface.
+  Enter virtual terminal password: ***
+Configure SNMP Network Management? [no]: no
+
+Current interface summary
+
+Interface              IP-Address      OK? Method Status                Protocol
+
+GigabitEthernet0/0     unassigned      YES manual administratively down down
+GigabitEthernet0/1     unassigned      YES manual administratively down down
+Vlan1                  unassigned      YES manual administratively down down
+
+Enter interface name used to connect to the
+management network from the above interface summary: 
+
+Press RETURN to get started!
+
+Router> enable
+Router# configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip address 192.168.1.1 255.255.255.224
+Router(config-if)# no shutdown
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+Router(config-if)# exit
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# ip address 192.168.1.33 255.255.255.224
+Router(config-if)# no shutdown
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+Router(config-if)# exit
+Router(config)# exit
+
+Router# show running-config
+Building configuration...
+
+Current configuration : 643 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname IhsanRouter
+!
+interface GigabitEthernet0/0
+ ip address 192.168.1.1 255.255.255.224
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ ip address 192.168.1.33 255.255.255.224
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+end
